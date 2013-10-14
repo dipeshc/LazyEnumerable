@@ -32,7 +32,7 @@ namespace LazyEnumerable
 			do
 			{
 				if (position % Take == 0)
-					currentPagedResults = (LazyEnumerableItemLoader (position, Take) ?? new T[] { }).ToArray();
+					currentPagedResults = (LazyEnumerableItemLoader (position, Take) ?? new T[] { }).Take(Take).ToArray();
 				position += Take;
 
 				paging = currentPagedResults.Count () == Take;

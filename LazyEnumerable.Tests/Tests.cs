@@ -90,5 +90,23 @@ namespace LazyEnumerable.Tests
 				Assert.AreEqual (expected, item);
 			}
 		}
+
+		[Test]
+		public void ReturnMoreThanTake()
+		{
+			var lazyEnumerable = new LazyEnumerable<int> (5, (position, count) => new [] { 1, 2, 3, 4, 5, 6 });
+
+			var expectedResults = new []
+			{
+				1, 2, 3, 4, 5, 1, 2, 3, 4, 5
+			};
+
+			for (var i = 0; i != 10; ++i)
+			{
+				var expected = expectedResults [i];
+				var actual = lazyEnumerable.ElementAt (i);
+				Assert.AreEqual (expected, actual);
+			}
+		}
 	}
 }
