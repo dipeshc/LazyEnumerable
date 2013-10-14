@@ -1,0 +1,8 @@
+language: c
+
+install:
+  - sudo apt-get install mono-devel mono-gmcs nunit-console
+
+script:
+  - xbuild LazyEnumerable.sln
+  - nunit-console ./LazyEnumerable.Tests/bin/Debug/LazyEnumerable.Tests.dll -exclude Integration,NotWorkingOnMono
