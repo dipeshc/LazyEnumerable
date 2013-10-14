@@ -1,5 +1,5 @@
-LazyEnumerable
-==============
+LazyEnumerable [![Build Status](https://travis-ci.org/dipeshc/LazyEnumerable.png)](https://travis-ci.org/dipeshc/LazyEnumerable)
+============== 
 IEnumerable wrapper library designed to lazily load backing IEnumerable data.
 	
 	IEnumerable<T> LazyEnumerable<T>(count, (start, count) => { })
