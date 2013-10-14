@@ -10,14 +10,12 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void BasicIntRangeTest()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (10, (position, count) =>
+			var lazyEnumerable = new LazyEnumerable<int> (10, (start, count) =>
 			{
-				if (position >= 100)
+				if (start >= 100)
 					return new List<int> ();
 				
-				var result = Enumerable.Range (position, count).Select (i => i * 2).ToList ();
-				
-				return result;
+				return Enumerable.Range (start, count).Select (i => i * 2).ToList ();
 			});
 
 			var expectedPositionCounter = 0;
@@ -31,14 +29,12 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void FinishReturningInNonMod0PositionTest()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (10, (position, count) =>
+			var lazyEnumerable = new LazyEnumerable<int> (10, (start, count) =>
 			{
-				if (position >= 101)
+				if (start >= 101)
 					return new List<int> ();
 
-				var result = Enumerable.Range (position, count).Select (i => i * 2).ToList ();
-
-				return result;
+				return Enumerable.Range (start, count).Select (i => i * 2).ToList ();
 			});
 
 			var expectedPositionCounter = 0;
@@ -52,14 +48,12 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void FinishReturningWithNullResponseTest()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (10, (position, count) =>
+			var lazyEnumerable = new LazyEnumerable<int> (10, (start, count) =>
 			{
-				if (position >= 100)
+				if (start >= 100)
 					return null;
 
-				var result = Enumerable.Range (position, count).Select (i => i * 2).ToList ();
-
-				return result;
+				return Enumerable.Range (start, count).Select (i => i * 2).ToList ();
 			});
 
 			var expectedPositionCounter = 0;
@@ -73,14 +67,12 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void ReturnNonFullCountInFirstRequestResponseTest()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (1000, (position, count) =>
+			var lazyEnumerable = new LazyEnumerable<int> (1000, (start, count) =>
 			{
-				if (position >= 100)
+				if (start >= 100)
 					return null;
 
-				var result = Enumerable.Range (position, count).Select (i => i * 2).ToList ();
-
-				return result;
+				return Enumerable.Range (start, count).Select (i => i * 2).ToList ();
 			});
 
 			var expectedPositionCounter = 0;
@@ -94,7 +86,7 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void ReturnMoreThanTake()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (5, (position, count) => new [] { 1, 2, 3, 4, 5, 6 });
+			var lazyEnumerable = new LazyEnumerable<int> (5, (start, count) => new [] { 1, 2, 3, 4, 5, 6 });
 
 			var expectedResults = new []
 			{

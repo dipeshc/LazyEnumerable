@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace LazyEnumerable
 {
-	public delegate IEnumerable<T> LazyEnumerableItemLoader<T>(int position, int take);
+	public delegate IEnumerable<T> LazyEnumerableItemLoader<T>(int start, int count);
 
 	public class LazyEnumerable<T> : IEnumerable<T>
 	{
 		protected readonly LazyEnumerableItemLoader<T> LazyEnumerableItemLoader;
-		protected readonly int Take;
+		protected readonly int Count;
 
-		public LazyEnumerable(int take, LazyEnumerableItemLoader<T> lazyEnumerableItemLoader)
+		public LazyEnumerable(int count, LazyEnumerableItemLoader<T> lazyEnumerableItemLoader)
 		{
-			Take = take;
+			Count = count;
 			LazyEnumerableItemLoader = lazyEnumerableItemLoader;
 		}
 
@@ -31,11 +31,11 @@ namespace LazyEnumerable
 
 			do
 			{
-				if (position % Take == 0)
-					currentPagedResults = (LazyEnumerableItemLoader (position, Take) ?? new T[] { }).Take(Take).ToArray();
-				position += Take;
+				if (position % Count == 0)
+					currentPagedResults = (LazyEnumerableItemLoader (position, Count) ?? new T[] { }).Take (Count).ToArray ();
+				position += Count;
 
-				paging = currentPagedResults.Count () == Take;
+				paging = currentPagedResults.Count () == Count;
 
 				foreach (var item in currentPagedResults)
 					yield return item;
