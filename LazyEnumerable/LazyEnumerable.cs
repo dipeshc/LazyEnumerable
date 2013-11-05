@@ -25,22 +25,25 @@ namespace LazyEnumerable
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			T[] currentPagedResults = null;
 			var position = 0;
-			var paging = true;
+            do
+            {
+                var pagedResults = LazyEnumerableItemLoader (position, Count);
 
-			do
-			{
-				if (position % Count == 0)
-					currentPagedResults = (LazyEnumerableItemLoader (position, Count) ?? new T[] { }).Take (Count).ToArray ();
-				position += Count;
+                if(pagedResults == null)
+                    break;
 
-				paging = currentPagedResults.Count () == Count;
+                var pagedResultsArray = pagedResults.ToArray();
 
-				foreach (var item in currentPagedResults)
-					yield return item;
-			}
-			while(paging);
+                if(pagedResultsArray.Length == 0)
+                    break;
+
+                position += pagedResultsArray.Length;
+
+                foreach (var item in pagedResultsArray)
+                    yield return item;
+            }
+            while(true);
 		}
 	}
 }

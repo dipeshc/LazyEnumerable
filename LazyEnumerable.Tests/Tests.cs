@@ -86,19 +86,23 @@ namespace LazyEnumerable.Tests
 		[Test]
 		public void ReturnMoreThanTake()
 		{
-			var lazyEnumerable = new LazyEnumerable<int> (5, (start, count) => new [] { 1, 2, 3, 4, 5, 6 });
+            var calls = 0;
+			var lazyEnumerable = new LazyEnumerable<int> (5, (start, count) =>
+            {
+                if(++calls == 2)
+                    return null;
 
-			var expectedResults = new []
-			{
-				1, 2, 3, 4, 5, 1, 2, 3, 4, 5
-			};
+                return new [] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            });
 
-			for (var i = 0; i != 10; ++i)
-			{
-				var expected = expectedResults [i];
-				var actual = lazyEnumerable.ElementAt (i);
-				Assert.AreEqual (expected, actual);
-			}
+            var i = 0;
+            foreach (var item in lazyEnumerable)
+            {
+                if (++i == 7)
+                    break;
+            }
+
+            Assert.AreEqual(1, calls);
 		}
 	}
 }
